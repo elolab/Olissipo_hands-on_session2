@@ -58,7 +58,6 @@ dev.off()
 ## Add metadata
 seu_lee <- AddMetaData(seu_lee, metadata)
 
-
 ## In the interest of time, we'll keep only the healthy controls and four severe COVID-19 patients
 keep <- c("nCoV_1", "nCoV_3", "nCoV_4", "nCoV_7", "Normal_1", "Normal_2", "Normal_3", "Normal_4")
 seu_lee <- subset(seu_lee, subset = individual %in% keep)
@@ -129,7 +128,7 @@ dev.off()
 ## Integrating the data
 seu_list <- SplitObject(seu_lee, split.by = "individual")
 
-# Finding cell anchors and integrating the data
+## Finding cell anchors and integrating the data
 seu_list <- lapply(X=seu_list, FUN=function(x){
   x <- NormalizeData(x)
   x <- FindVariableFeatures(x, selection.method = "vst", nfeatures=2000)
@@ -255,7 +254,7 @@ library(ROTS)
 library(edgeR)
 
 ## Pseudobulks
-## For pseudobulk, we first need to aggregate the counts
+## For pseudobulk analysis, we first need to aggregate the counts
 seu_combined$ROTS_group <- paste(seu_combined$cell_type, seu_combined$individual, sep="_")
 sce <- as.SingleCellExperiment(seu_combined)
 ps <- list()
