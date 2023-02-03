@@ -1,4 +1,4 @@
-## Hands-on session for Olissipo single-cell school
+## Hands-on session for Olissipo Modelling and Analysis of Single Cell Multiple Biological Omics
 ## Basic analysis workflow for Lee data
 
 ## Lee data is publicly available in GEO with accession GSE149689
@@ -18,6 +18,7 @@ data_lee <- Read10X("data")
 ## Read10X expects the files to be named barcodes.tsv.gz, features.tsv.gz and matrix.mtx.gz
 
 ## Create Seurat object
+## You can name the project the way you like
 seu_lee <- CreateSeuratObject(data_lee, project = "Lee COVID data")
 
 ## Have a look at the Seurat object structure
@@ -39,7 +40,7 @@ dev.off()
 ## The code below is an example that you could use to filter the bad quality cells based on their properties. 
 
 ## seu_lee <- subset(seu_lee, subset = nFeature_RNA > 1000 & nFeature_RNA < 4000 & percent.mt < 10) 
-## This would select cells expressing more than 1K distinct genes and lower than 4K as well as cells expressing less than 10% mitochondrial genes. 
+## This would select cells expressing more than 1000 and less than 4000 distinct genes as well as cells expressing less than 10% mitochondrial genes. 
 
 metadata <- readRDS("data/metadata_lee.rds")
 seu_lee$cellID <- colnames(seu_lee)
@@ -63,7 +64,6 @@ keep <- c("nCoV_1", "nCoV_3", "nCoV_4", "nCoV_7", "Normal_1", "Normal_2", "Norma
 seu_lee <- subset(seu_lee, subset = individual %in% keep)
 
 ## Clustering without integration
-set.seed(1024) # for reproducibility
 seu_lee <- NormalizeData(seu_lee, normalization.method="LogNormalize", 
                      scale.factor=10000)
 seu_lee <- FindVariableFeatures(seu_lee, selection.method="vst", 
